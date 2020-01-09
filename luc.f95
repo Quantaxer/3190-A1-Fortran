@@ -14,10 +14,10 @@ program luc
 
 !   Get user input
     write(*, *) 'Enter key'
-    read(*, 1004) (kb(i), i = 0, 31) 
+    read(*, 1004) kb
 
     write(*, *) 'Enter plaintext'
-    read(*, 1004) (mb(i), i = 0, 31) 
+    read(*, 1004) mb
 
     call expand(message, mb, 32)
     call expand(key, kb, 32) 
@@ -29,10 +29,10 @@ program luc
     call lucifer(d, k, m) 
 
 !   Display encrpyted message
-    write(*, *) 'Encrypted message message'
+    write(*, *) 'Encrypted message'
     call compress(m, rb, 32)
     write(*, *) ' ciphertext'
-    write(*, 1007) (rb(i), i = 0, 31) 
+    write(*, 1007) rb
 
     d = 1 
     call lucifer(d, k, m) 
@@ -43,9 +43,9 @@ program luc
 !   Display decrypted message
     write(*, *) 'Decrypted message'
     write(*, *) 'key'
-    write(*, 1007) (kb(i), i = 0, 31)
+    write(*, 1007) kb
     write(*, *) 'plain'
-    write(*, 1007) (mb(i), i = 0, 31) 
+    write(*, 1007) mb
 
     1004 format(32z1.1)
     1007 format(1x,32z1.1)

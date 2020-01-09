@@ -6,7 +6,7 @@ program luc
     implicit none
 
 !   Declare integers and arrays
-    integer :: d, i
+    integer :: d, hexLength
     integer, dimension(0:7, 0:15) :: k
     integer, dimension(0:7, 0:7, 0:1) :: m
     integer, dimension(0:127) :: key, message
@@ -15,12 +15,14 @@ program luc
 
 !   Get user input
     write(*, *) 'Enter key'
-    read(*, 1004) (kb(i), i = 0, 31) 
+    read(*, 1004) kb
 
     call readWord(word)
 
-    call word2hex(word, mb, len_trim(word))
-    write(*,1007)mb
+    call word2hex(word, mb, len_trim(word), hexLength)
+
+!   Calculate length of hex word
+    call printhex(mb, hexLength)
 
     call expand(message, mb, 32)
     call expand(key, kb, 32) 
@@ -32,10 +34,10 @@ program luc
     call lucifer(d, k, m) 
 
 !   Display encrpyted message
-    write(*, *) 'Encrypted message message'
+    write(*, *) 'Encrypted message'
     call compress(m, rb, 32)
     write(*, *) ' ciphertext'
-    write(*, 1007) (rb(i), i = 0, 31) 
+    write(*, 1007) rb
 
     d = 1 
     call lucifer(d, k, m) 
@@ -46,9 +48,9 @@ program luc
 !   Display decrypted message
     write(*, *) 'Decrypted message'
     write(*, *) 'key'
-    write(*, 1007) (kb(i), i = 0, 31)
+    write(*, 1007) kb
     write(*, *) 'plain'
-    write(*, 1007) (mb(i), i = 0, 31) 
+    write(*, 1007) mb
 
     1004 format(32z1.1)
     1007 format(1x,32z1.1)

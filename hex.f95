@@ -20,11 +20,12 @@ end
 ! Param w: word (in) 
 ! Param h: word in hexidecimal (out) 
 ! Param l: length of the word entered (in)
+! Param hexLength: length of the resulting hex word
 ! -----------------------------------------------------------------
-subroutine word2hex(w, h, l)
+subroutine word2hex(w, h, l, hexLength)
     implicit none
 
-    integer :: l, i, j, result, hIndex, tempIndex
+    integer :: l, i, j, result, hIndex, tempIndex, hexLength
     real :: remainder
     character(len=l) :: w
     integer, dimension(0:l-1) :: h
@@ -68,6 +69,8 @@ subroutine word2hex(w, h, l)
         end do
     end do
 
+    hexLength = hIndex
+
 !   Any remaining values should be set to 0
     do i = hIndex, 32
         h(i) = 0
@@ -81,9 +84,19 @@ end
 ! Param h: word entered in hexidecimal (out)
 ! Param l: length of the word entered (out)
 ! -----------------------------------------------------------------
-!subroutine printhex(h, l)
-  !  implicit none
+subroutine printhex(h, l)
+    implicit none
 
+    integer :: l, i
+    integer, dimension(0:31) :: h
+    integer, dimension(0:l - 1) :: formattedWord
 
- !   return
-!end
+    do i = 0, l - 1
+        formattedWord(i) = h(i)
+    end do
+
+    write(*,1007) formattedWord
+    
+    1007 format(1x,32z1.1)
+    return
+end

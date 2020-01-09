@@ -11,25 +11,16 @@ program luc
     integer, dimension(0:7, 0:7, 0:1) :: m
     integer, dimension(0:127) :: key, message
     integer, dimension(0:31) :: kb, mb, rb
-
-    interface
-        function readWord(w)
-            declarations here
-        end function readWord
-        function word2hex(w, h, l)
-            declarations here
-        end function word2hex
-        function printhex(h, l)
-            declarations here
-        end function printhex
-    end interface
+    character(len=10) :: word
 
 !   Get user input
-    write(*, 1003)
+    write(*, *) 'Enter key'
     read(*, 1004) (kb(i), i = 0, 31) 
 
-    write(*, 1005)
-    read(*, 1006) (mb(i), i = 0, 31) 
+    call readWord(word)
+
+    call word2hex(word, mb, len_trim(word))
+    write(*,1007)mb
 
     call expand(message, mb, 32)
     call expand(key, kb, 32) 
@@ -41,9 +32,9 @@ program luc
     call lucifer(d, k, m) 
 
 !   Display encrpyted message
-    write(*, 1000)
+    write(*, *) 'Encrypted message message'
     call compress(m, rb, 32)
-    write(*, 1002)
+    write(*, *) ' ciphertext'
     write(*, 1007) (rb(i), i = 0, 31) 
 
     d = 1 
@@ -53,19 +44,13 @@ program luc
     call compress(key, kb, 32)
 
 !   Display decrypted message
-    write(*, 1001)
-    write(*, 1003)
+    write(*, *) 'Decrypted message'
+    write(*, *) 'key'
     write(*, 1007) (kb(i), i = 0, 31)
-    write(*, 1005)
+    write(*, *) 'plain'
     write(*, 1007) (mb(i), i = 0, 31) 
 
-    1000 format('Encrypted message')
-    1001 format('Decrypted message')
-    1002 format(' ciphertext')
-    1003 format(' key ') 
     1004 format(32z1.1)
-    1005 format(' plain ')
-    1006 format(32z1.1)
     1007 format(1x,32z1.1)
 
 end

@@ -5,12 +5,24 @@ program luc
 
     implicit none
 
-!	Declare integers and arrays
+!   Declare integers and arrays
     integer :: d, i
     integer, dimension(0:7, 0:15) :: k
     integer, dimension(0:7, 0:7, 0:1) :: m
     integer, dimension(0:127) :: key, message
     integer, dimension(0:31) :: kb, mb, rb
+
+    interface
+        function readWord(w)
+            declarations here
+        end function readWord
+        function word2hex(w, h, l)
+            declarations here
+        end function word2hex
+        function printhex(h, l)
+            declarations here
+        end function printhex
+    end interface
 
 !   Get user input
     write(*, 1003)

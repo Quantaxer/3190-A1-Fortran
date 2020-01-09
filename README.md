@@ -2,4 +2,7 @@
 Refactoring Fortran
 
 TODO:
-	Fix ciphertext printing strangely: wait for prof
+	Finish task 2:
+		- build subprograms in hex.f95
+		- Build interface section in luchex.f95
+		- Actually make luchex.f95 do stuff properly

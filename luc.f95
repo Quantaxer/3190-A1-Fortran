@@ -10,9 +10,7 @@ program luc
     integer, dimension(0:7, 0:15) :: k
     integer, dimension(0:7, 0:7, 0:1) :: m
     integer, dimension(0:127) :: key, message
-    integer, dimension(0:31) :: kb, mb
-
-    equivalence (k(0,0),key(1)),(m(0,0,0),message(1)) 
+    integer, dimension(0:31) :: kb, mb, rb
 
 !   Get user input
     write(*, 1003)
@@ -24,6 +22,9 @@ program luc
     call expand(message, mb, 32)
     call expand(key, kb, 32) 
 
+    k = reshape(key, (/ 8, 16 /))
+    m = reshape(message, (/ 8, 8, 2/))
+
 !   Here for testing purposes
     !write(*, 1000) (key(i), i = 0, 127)
     !write(*, 1001) (message(i), i = 0, 127) 
@@ -33,8 +34,8 @@ program luc
 
 !   Display encrpyted message
     write(*, 1008)
-    call compress(message, mb, 32)
-    write(*, 1002) (mb(i), i = 0, 31) 
+    call compress(m, rb, 32)
+    write(*, 1002) (rb(i), i = 0, 31) 
 
     d = 1 
     call lucifer(d, k, m) 
@@ -79,8 +80,6 @@ subroutine lucifer(d,k,m)
     integer, dimension(0:7) :: tr
     integer, dimension(0:7, 0:7) :: sw
     integer, dimension(0:1) :: c
-
-    equivalence (c(0),h),(c(1),l) 
 
 !   diffusion pattern
     integer, dimension(0:7) :: o = (/7,6,2,1,5,0,3,4/)

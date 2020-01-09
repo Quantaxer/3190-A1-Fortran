@@ -2,5 +2,4 @@
 Refactoring Fortran
 
 TODO:
-	Remove equivalence
-	Add whitespace to = and ,
+	Fix ciphertext printing strangely: wait for prof

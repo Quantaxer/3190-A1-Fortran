@@ -5,7 +5,7 @@
 ! -----------------------------------------------------------------
 subroutine readWord(w)
     implicit none
-    character(len=10) :: w
+    character(len=10), intent(out) :: w
     
     write(*, *) 'Enter word to be encrypted'
     read(*, 1000) w
@@ -24,11 +24,12 @@ end
 ! -----------------------------------------------------------------
 subroutine word2hex(w, h, l, hexLength)
     implicit none
+    integer, intent(in) :: l
+    character(len=l), intent(in) :: w
+    integer, dimension(0:l-1), intent(out) :: h
 
-    integer :: l, i, j, result, hIndex, tempIndex, hexLength
+    integer :: i, j, result, hIndex, tempIndex, hexLength
     real :: remainder
-    character(len=l) :: w
-    integer, dimension(0:l-1) :: h
     integer, dimension(0: l) :: asciiWord
     integer, dimension(0:1) :: x
 
@@ -86,9 +87,10 @@ end
 ! -----------------------------------------------------------------
 subroutine printhex(h, l)
     implicit none
+    integer, intent(in) :: l
+    integer, dimension(0:31), intent(out) :: h
 
-    integer :: l, i
-    integer, dimension(0:31) :: h
+    integer :: i
     integer, dimension(0:l - 1) :: formattedWord
 
     do i = 0, l - 1

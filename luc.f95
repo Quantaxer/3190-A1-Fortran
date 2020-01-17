@@ -1,12 +1,14 @@
 ! -----------------------------------------------------------------
-! Description: luc: The main program that runs
+! Description: luc: The main program that runs. Takes in an ascii word
+! in hex, then runs the lucifer algorithm on it to encrypt
+! and decrypt it
 ! -----------------------------------------------------------------
 program luc 
 
     implicit none
 
 !	Declare integers and arrays
-    integer :: d, i
+    integer :: d
     integer, dimension(0:7, 0:15) :: k
     integer, dimension(0:7, 0:7, 0:1) :: m
     integer, dimension(0:127) :: key, message
@@ -60,10 +62,11 @@ end
 ! -----------------------------------------------------------------
 subroutine lucifer(d, k, m)
     implicit none
-    integer :: d, l, ks, kk, kc, jjj, jj, ii, h1, h0, h, v
+    integer, intent(in) :: d
+    integer, dimension(0:7, 0:15), intent(in) :: k
+    integer, dimension(0:7, 0:7, 0:1), intent(in out) :: m
 
-    integer, dimension(0:7, 0:7, 0:1) :: m
-    integer, dimension(0:7, 0:15) :: k
+    integer :: l, ks, kk, kc, jjj, jj, ii, h1, h0, h, v
     integer, dimension(0:7) :: tr
     integer, dimension(0:7, 0:7) :: sw
 
@@ -136,8 +139,10 @@ end
 ! -----------------------------------------------------------------
 subroutine expand(a, b, l)
     implicit none
-    integer :: l, i, j, v
-    integer, dimension(0:*) :: a, b
+    integer, intent(in) :: l
+    integer, dimension(0:*), intent(out) :: a
+    integer, dimension(0:*), intent(in) :: b
+    integer :: i, j, v
 
     do i = 0, l - 1, 1
         v = b(i)
@@ -157,8 +162,10 @@ end
 ! -----------------------------------------------------------------
 subroutine compress(a, b, l)
     implicit none
-    integer :: l, i, j, v
-    integer, dimension(0:*) :: a, b
+    integer, intent(in) :: l
+    integer, dimension(0:*), intent(in) :: a
+    integer, dimension(0:*), intent(out) :: b
+    integer :: i, j, v
 
     do i = 0, l - 1, 1
         v = 0 

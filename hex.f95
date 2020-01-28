@@ -7,7 +7,7 @@ subroutine readWord(word)
     implicit none
     character(len=10), intent(out) :: word
     
-    write(*, *) 'Enter word to be encrypted'
+    write(*, *) 'Enter word to be encrypted (max 10 characters)'
     read(*, 1000) word
 
     1000 format(A10)

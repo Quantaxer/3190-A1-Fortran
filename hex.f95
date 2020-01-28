@@ -1,14 +1,14 @@
 ! -----------------------------------------------------------------
 ! Description: readWord: Takes input from the user in the form of  a word to be encrypted, 
 !                        and returns the word to the calling program.
-! Param w: user submitted word in ASCII (out)
+! Param word: user submitted word in ASCII (out)
 ! -----------------------------------------------------------------
-subroutine readWord(w)
+subroutine readWord(word)
     implicit none
-    character(len=10), intent(out) :: w
+    character(len=10), intent(out) :: word
     
     write(*, *) 'Enter word to be encrypted'
-    read(*, 1000) w
+    read(*, 1000) word
 
     1000 format(A10)
     return
@@ -17,29 +17,31 @@ end
 ! -----------------------------------------------------------------
 ! Description: word2hex: converts the ASCII word obtained using readWord(), 
 !                        to hexadecimal, before it is passed to the subroutine expand()
-! Param w: word (in) 
-! Param h: word in hexidecimal (out) 
-! Param l: length of the word entered (in)
-! Param hexLength: length of the resulting hex word
+! Param word: word (in) 
+! Param hexWord: word in hexidecimal (out) 
+! Param length: length of the word entered (in)
+! Param hexLength: length of the resulting hex word (out)
 ! -----------------------------------------------------------------
-subroutine word2hex(w, h, l, hexLength)
+subroutine word2hex(word, hexWord, length, hexLength)
     implicit none
-    integer, intent(in) :: l
-    character(len=l), intent(in) :: w
-    integer, dimension(0:l-1), intent(out) :: h
+    integer, intent(in) :: length
+    character(len=length), intent(in) :: word
+    integer, dimension(0:length-1), intent(out) :: hexWord
+    integer, intent(out) :: hexLength
 
-    integer :: i, j, result, hIndex, tempIndex, hexLength
+    integer :: i, j
+    integer :: asciiIntValue, hIndex, tempIndex
     real :: remainder
-    integer, dimension(0: l) :: asciiWord
+    integer, dimension(0: length) :: asciiWord
     integer, dimension(0:1) :: x
 
 
 !   Convert char to ASCII int array
-    do i = 1, l + 1
-        if (i == l + 1) then
+    do i = 1, length + 1
+        if (i == length + 1) then
             asciiWord(i - 1) = 0
         else
-            asciiWord(i - 1) = iachar(w(i:i))
+            asciiWord(i - 1) = iachar(word(i:i))
         end if
     end do
     
@@ -47,15 +49,15 @@ subroutine word2hex(w, h, l, hexLength)
     hIndex = 0
 
 !   Logic for converting a word to hex. Loop through every letter in the word
-    do i = 0, l - 1
-        result = asciiWord(i)
+    do i = 0, length - 1
+        asciiIntValue = asciiWord(i)
         tempIndex = 1
 
 !       This loop is to convert the decimal to hex
         do
-            if (result <= 0) exit
-            remainder = modulo(result, 16)
-            result = result / 16
+            if (asciiIntValue <= 0) exit
+            remainder = modulo(asciiIntValue, 16)
+            asciiIntValue = asciiIntValue / 16
 
 !           I do this because when converting decimal to hex, the desired values are reversed, so we load it into a temp array in reverse
 !           This way when reading it front to back we have the correct value
@@ -65,7 +67,7 @@ subroutine word2hex(w, h, l, hexLength)
 
 !       Load in the temp array with the hex value into the new hex array
         do j = 0, 1
-            h(hIndex) = x(j)
+            hexWord(hIndex) = x(j)
             hIndex = hIndex + 1
         end do
     end do
@@ -74,7 +76,7 @@ subroutine word2hex(w, h, l, hexLength)
 
 !   Any remaining values should be set to 0
     do i = hIndex, 32
-        h(i) = 0
+        hexWord(i) = 0
     end do
 
     return
@@ -82,19 +84,19 @@ end
 
 ! -----------------------------------------------------------------
 ! Description: printhex: Prints a word into hex format
-! Param h: word entered in hexidecimal (out)
-! Param l: length of the word entered (out)
+! Param hexWord: word entered in hexidecimal (out)
+! Param length: length of the word entered (in)
 ! -----------------------------------------------------------------
-subroutine printhex(h, l)
+subroutine printhex(hexWord, length)
     implicit none
-    integer, intent(in) :: l
-    integer, dimension(0:31), intent(out) :: h
+    integer, intent(in) :: length
+    integer, dimension(0:31), intent(out) :: hexWord
 
     integer :: i
-    integer, dimension(0:l - 1) :: formattedWord
+    integer, dimension(0:length - 1) :: formattedWord
 
-    do i = 0, l - 1
-        formattedWord(i) = h(i)
+    do i = 0, length - 1
+        formattedWord(i) = hexWord(i)
     end do
 
     write(*,1007) formattedWord

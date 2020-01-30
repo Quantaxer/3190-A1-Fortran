@@ -15,10 +15,11 @@ program luc
     integer, dimension(0:31) :: kb, mb, rb
 
 !   Get user input
-    write(*, *) 'Enter key'
+    write (*, *) 'This program encrypts then decrypts a hex word'
+    write(*, *) 'Please enter the key that will be used for encryption'
     read(*, 1004) kb
 
-    write(*, *) 'Enter plaintext'
+    write(*, *) 'Please enter the plaintext word in hex'
     read(*, 1004) mb
 
     call expand(message, mb, 32)
@@ -33,7 +34,6 @@ program luc
 !   Display encrpyted message
     write(*, *) 'Encrypted message'
     call compress(m, rb, 32)
-    write(*, *) ' ciphertext'
     write(*, 1007) rb
 
     d = 1 
@@ -44,9 +44,6 @@ program luc
 
 !   Display decrypted message
     write(*, *) 'Decrypted message'
-    write(*, *) 'key'
-    write(*, 1007) kb
-    write(*, *) 'plain'
     write(*, 1007) mb
 
     1004 format(32z1.1)
